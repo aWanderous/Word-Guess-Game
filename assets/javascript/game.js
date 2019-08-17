@@ -15,12 +15,19 @@ var words = ["hawkman","aquaman","batman","superman","wonder woman", "green arro
 document.onkeyup = function(event) {
 var userGuess = event.key;
 
-// random generator
+// randomly chose a word
 var theHero = words[Math.floor(Math.random() * words.length)];
 
 // each letter sperated into a single string
 for (var i = 0; i < theHero.length; i++) {
+    document.getElementById(i);
 }
+
+// for every correct keyup change to the letter
+
+// if not guesscount reduced
+
+// if guesscount=0 , losses++
 
 // prints the result of each game
 userChoiceText.textContent = "You guessed: " + userGuess;
