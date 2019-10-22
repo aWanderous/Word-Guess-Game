@@ -1,38 +1,72 @@
-
 // the counters starting points
 var wins = 0;
 var losses = 0;
 var guessCount = 10;
 
-
-// letters in array
-var letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-
 // words in array
-var words = ["hawkman","aquaman","batman","superman","wonder woman", "green arrow", "captain america", "daredevil", "falcon", "hulk", "ironman", "thor", "robin", "storm", "war machine", "doctor strange", "spiderman"];
+var heroes = ["ant-man", "aquaman", "beast", "batman", "hawkman", "superman", "wonder woman", "green arrow", "captain america", "daredevil", "falcon", "hulk", "ironman", "thor", "robin", "storm", "war machine", "doctor strange", "spiderman"];
 
-// when button is released
-document.onkeyup = function(event) {
-var userGuess = event.key;
+var theHero;
+var chosenHero = [];
+var correct = [];
+var incorrect = [];
+var solved = false;
 
-// randomly chose a word
-var theHero = words[Math.floor(Math.random() * words.length)];
-
-// each letter sperated into a single string
-for (var i = 0; i < theHero.length; i++) {
-    document.getElementById(i);
-}
-
-// for every correct keyup change to the letter
-
-// if not guesscount reduced
-
-// if guesscount=0 , losses++
-
-// prints the result of each game
-userChoiceText.textContent = "You guessed: " + userGuess;
-winsText.textContent = "wins: " + wins;
-lossesText.textContent = "losses: " + losses;
-countText.textContent = "Guesses you have left: " + guessCount;
-correctText.textContent = "The hero was: " + theHero;
+// start the game
+$(document).one("keyup", function start() {
+    $("#starter").hide();
+    $("#title").text("Guess the hero!");
+    newHero();
+    play();
+})
+//generate new word
+function newHero() {
+    theHero = heroes[Math.floor(Math.random() * heroes.length)];
+    chosenHero = [];
+    for (var i = 0; i < theHero.length; i++) {
+        chosenHero[i] = "_";
+        $("#game").html(chosenHero.join(" "))
+    }
+    correct = [];
+    incorrect = [];
+    guessCount = 10;
+    solved = false;
 };
+
+
+function play() {
+    // when button is released
+    document.onkeyup = function (event) {
+        keyCode = event.key; 
+        
+        if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 122)) {
+            $("#message").text("Please enter a letter")
+            return false;
+            play();
+        } else {
+            choice = keyCode;
+            console.log(choice)
+            if (incorrect.includes(choice) || correct.includes(choice)) {
+                $("#message").text("This letter has already been guessed");
+            } else {
+                
+                function spellCheck(choice) {
+                    for (var i = 0; i < theHero.length; i++) {
+                        if (choice === theHero[i]) {
+                            chosenHero[i] = choice;
+                            correct.push(choice);
+                            console.log(correct)
+                            $("#message").text("The letter " + choice + " is in the hero's name.");
+                        } else {
+                            incorrect.push(choice);
+                            console.log(incorrect)
+                            $("#message").text("The letter " + choice + " is not in the hero's name.");
+                            guessCount--;
+                            console.log(guessCount)
+                        }
+                    }
+                }
+            };
+        };
+    }
+}
